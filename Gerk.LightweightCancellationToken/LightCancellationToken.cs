@@ -8,7 +8,8 @@ namespace Gerk.LightweightCancellationToken
 {
 	public class LightweightCancellationToken
 	{
-		internal volatile bool cancelled;
+		private volatile bool cancelled;
+		internal bool Cancelled => cancelled;
 
 		internal void Cancel()
 		{
@@ -24,5 +25,11 @@ namespace Gerk.LightweightCancellationToken
 		{
 			Task.Delay(timeSpan).Then(Cancel);
 		}
+	}
+
+	public static class LightweightCancellationTokenExtensions
+	{
+		public static bool IsCancelled(this LightweightCancellationToken token) => token?.Cancelled ?? false;
+		public static void Cancel(this LightweightCancellationToken token) => token?.Cancel();
 	}
 }
